@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lamp Simulator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding-top: 50px;
+    }
+    .container {
+      text-align: center;
+    }
+    #lamp {
+      width: 150px;
+      margin: 20px auto;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lamp Display</h1>
+    <img id="lamp" src="" alt="Lamp">
+  </div>
+
+  <div class="container">
+    <h1>Lamp Control</h1>
+    <button onclick="toggleLamp()">Toggle Lamp</button>
+  </div>
+
+  <script>
+    const lampImg = document.getElementById('lamp');
+    const socket = new WebSocket(`ws://${location.host}`);
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      updateLamp(data.on);
+    };
+
+    async function toggleLamp() {
+      await fetch('/api/lamp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    function updateLamp(isOn) {
+      lampImg.src = isOn ? 'lightOn.png' : 'lightOff.png';
+    }
+  </script>
+</body>
+</html>
