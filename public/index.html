@@ -40,7 +40,8 @@
 
   <script>
     const lampImg = document.getElementById('lamp');
-    const socket = new WebSocket(`ws://${location.host}`);
+    const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const socket = new WebSocket(`${protocol}//${location.host}`);
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
