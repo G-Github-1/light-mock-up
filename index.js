@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 3000;
 
 let lampState = false;
 
-// Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
@@ -36,5 +35,3 @@ function broadcastLampState() {
 wss.on('connection', (ws) => {
   ws.send(JSON.stringify({ on: lampState }));
 });
-
-server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
