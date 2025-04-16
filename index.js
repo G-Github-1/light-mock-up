@@ -35,3 +35,5 @@ function broadcastLampState() {
 wss.on('connection', (ws) => {
   ws.send(JSON.stringify({ on: lampState }));
 });
+
+server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
