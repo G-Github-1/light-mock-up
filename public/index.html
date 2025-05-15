@@ -36,6 +36,7 @@
   <div class="container">
     <h1>Lamp Control</h1>
     <button onclick="toggleLamp()">Toggle Lamp</button>
+    <button onclick="changeColor()">Change Color</button>
   </div>
 
   <script>
@@ -45,18 +46,29 @@
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      updateLamp(data.on);
+      updateLamp(data);
     };
 
     async function toggleLamp() {
-      await fetch('/api/lamp', {
+      await fetch('/lamp/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    async function changeColor() {
+      await fetch('/lamp/color', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    function updateLamp(isOn) {
-      lampImg.src = isOn ? 'lightOn.png' : 'lightOff.png';
+    function updateLamp(data) {
+      if(data.on) {
+        lampImg.src = "light-" + data.color + ".png";
+      } else {
+        lampImg.src = 'light-Off.png';
+      }
     }
   </script>
 </body>
